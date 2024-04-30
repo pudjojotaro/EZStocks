@@ -1,0 +1,397 @@
+@font-face {
+  font-family: 'FFMARK';  
+  src: url('../fonts/FontFont_FF.Mark.Pro.Heavy.otf') format('opentype');  
+  font-weight: normal;
+  font-style: normal;
+}
+
+.noto-sans-NotoSansFont {
+  font-family: "Noto Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 100;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Noto Sans', sans-serif;
+  font-weight: 400;  
+  background-color: #f0f0f0;
+}
+
+.header {
+  color: white;
+  text-align: center;
+  padding: 10px;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff; /* Set header background to white */
+  border-bottom: 1px solid #cccccc;
+  box-sizing: border-box; 
+}
+
+.header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -20px; /* Extend slightly beyond the bottom of the header */
+  height: 20px; /* Height of the gradient effect */
+  background: linear-gradient(to bottom, rgba(28, 28, 28, 0.1), #f0f0f0);
+  z-index: -1; /* Ensure it's under the content for clickable items in the header */
+}
+
+
+
+.website-name-EZ {
+  color: #30A119;
+  font-family: 'FFMARK';
+}
+
+.website-name-Stocks {
+  color: #000000;
+  font-family: 'FFMARK';
+}
+.header-content {
+  width: 100%;
+  max-width: 1000px;
+  /* or your desired maximum width */
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  /* Adjust the size of your logo */
+  height: 25px;
+  
+  padding-right: 8px;
+}
+
+.navigation {
+
+  display: flex;
+  align-items: center;
+  height: 100%;  /* Adjust as needed to fill the header */
+  padding: 0;  /* Removes any default padding */
+}
+
+
+.navigation .tab {
+  padding: 10px 20px;
+  border: none;
+  background-color: transparent;
+  color: #bbbbbb;
+  font-size: 0.8em;
+  cursor: pointer;
+  margin-bottom: -10px;
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;  /* Centers the text vertically */
+  height: 100%;  /* Expand to fill the navigation height */
+  box-sizing: border-box; 
+  border-bottom: 2px solid transparent;
+}
+
+.navigation .tab:hover {
+  /* Lighter shade on hover for high contrast */
+  border-bottom: 2px solid #cccccc;
+  color: #000000;
+  /* Change text color for readability on hover */
+}
+
+.navigation .tab.active {
+  color: #000000;
+  border-bottom: 2px solid #000000;
+  /* High contrast color */
+}
+
+
+@media (max-width: 600px) {
+  .sidebar {
+    display: none;
+  }
+
+  .main-content,
+  .top-bar,
+  .filter-container {
+    margin-left: 0;
+    /* Full width on smaller screens */
+    padding-left: 20px;
+    /* Add some padding */
+  }
+}
+
+.main-content {
+  /*margin-left: 160px;*/
+  /* Same as sidebar width */
+  padding: 80px 20px 20px 20px;
+  /* Account for header height */
+}
+
+.top-bar,
+.filter-container,
+.stock-grid {
+  margin-left: auto;
+  /* Aligns content to the center of their container */
+  margin-right: auto;
+  /* Aligns content to the center of their container */
+  max-width: 1000px;
+  /* Adjust as needed, should match or be less than the main content's width */
+  padding-left: 20px;
+  /* Adjust this to ensure alignment with stock rectangles */
+  padding-right: 20px;
+  /* Adjust this to ensure alignment with stock rectangles */
+}
+
+.search-bar {
+  width: 100%;
+  height: 50px;
+  /* Allows the search bar to take the full width of its container */
+  padding: 8px;
+  margin-bottom: 10px;
+  outline: none; /* Removes the default focus outline */
+  border: 1px solid transparent;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease; /* Smooth transition for the border color */
+  /* Space between search bar and filters */
+  background-color: #fafafa;
+  border-radius: 10px;
+  font-family: 'Noto Sans';
+}
+
+
+.search-bar:focus {
+  border: 1px solid #cccccc; /* Even darker border when the input is focused */
+  background-color: #fff; /* Brightens up on focus */
+}
+
+.filter-container {
+  display: flex;
+  
+  /* Applies flexbox to the filter buttons container */
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+  /*padding: 8px 10px; /* Same horizontal padding as the top-bar for alignment */
+}
+
+
+@media screen and (max-width: 1200px) {
+  /* If necessary, adjust padding or margins specifically for this viewport range */
+  .top-bar,
+  .filter-container,
+  .stock-grid {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
+
+.filter-button {
+  padding: 8px 12px;
+  height: 40px;
+  /* Updated padding for better visual appeal */
+  background-color: #fafafa;
+  border: 1px solid #d4d4d4;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  /* Space between button text and icon */
+  transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
+  /* Smooth transition for hover effects */
+  border-radius: 10px;
+  font-family: 'Noto Sans';
+}
+
+
+#mentionsFilter {
+  display: flex;       
+  justify-content: space-between;  
+  align-items: center; 
+  width: 120px;
+  padding: 8px 12px;  
+  box-sizing: border-box; 
+}
+
+#mentionsFilter i {
+  margin-left: auto;  
+}
+
+.filter-button.active {
+  background-color: #000; /* Green background for active state */
+  color: white; /* White text for active state */
+  /* Additional styles for active state */
+}
+
+.filter-button:hover:not(.active) {
+  background-color: #f0f0f0;
+  /* Lighter shade on hover */
+}
+
+.filter-button.rightmost {
+  position: relative;
+  margin-left: auto; /* Pushes this button to the right */
+}
+
+.filter-button.rightmost::after {
+  content: "Reset Filters";
+  position: absolute;
+  bottom: -30px; /* Adjust as needed to position below the button */
+  left: 50%;
+  transform: translateX(-50%); /* Centers the pseudo-element horizontally */
+  white-space: nowrap; /* Prevents the text from wrapping */
+  opacity: 0; /* Start fully transparent */
+  visibility: hidden; /* Start hidden to prevent interaction */
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  padding: 5px 10px; /* Small padding around the text */
+  background-color: #f0f0f0; /* Light background for the rectangle */
+  color: #000000; /* Text color */
+  border-radius: 4px; /* Optional: rounds the corners of the rectangle */
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); /* Optional: adds a small shadow for depth */
+  font-size: 0.8em; /* Adjust as needed */
+  z-index: 1; /* Ensures it's above other elements */
+}
+
+.filter-button.rightmost:hover::after {
+  opacity: 1; /* Fully visible on hover */
+  visibility: visible; /* Make it visible on hover */
+}
+
+
+.time-filter-container {
+  position: relative;
+}
+
+
+.dropdown {
+  position: absolute;
+  top: 105%; /* Position the dropdown right below the button */
+  left: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  width: 150px;
+  box-sizing: border-box;
+  z-index: 10; /* Ensure dropdown appears above other elements */
+}
+
+.dropdown-option {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.dropdown-option:hover {
+  background-color: #f0f0f0;
+}
+
+.filter-button.selected {
+  background-color: black; /* Set the background color to black */
+  color: white; /* Set the text color to white for better contrast */
+}
+
+
+.filter-icon {
+  display: inline-block;
+  /* To align the icon with the text */
+}
+
+.filter-bar input[type="search"] {
+  padding: 10px;
+  flex-grow: 1;
+  margin-left: 10px;
+}
+
+.stock-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  /* larger rectangles */
+  gap: 10px;
+}
+
+.stock-item {
+  position: relative;
+  color: #000;
+  /* white text for better contrast on solid background */
+  padding: 30px;
+  /* larger padding for a larger rectangle */
+  height: 40px;
+  background-color: #fafafa;
+  border: 1px solid #d4d4d4;
+  cursor: pointer;
+  /* taller rectangles */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  font-size: 1.5em;
+  /* larger text */
+  text-transform: uppercase;
+  /* capitalizes text */
+  cursor: default;
+}
+
+.stock-item:hover {
+  cursor: pointer;
+  background-color: #f0f0f0;
+
+}
+
+.stock-item:hover .heart-icon,
+.heart-icon.active {
+  opacity: 1; /* Make the icon visible on hover of the stock-item */
+  visibility: visible; /* Make it part of the accessibility tree on hover of the stock-item */
+}
+
+.heart-icon {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  color: grey;  /* Initial color for the outline */
+  font-size: 20px; /* Adjust size as needed */
+  cursor: pointer; /* Indicates it's clickable */
+  opacity: 0; /* Start with the icon invisible */
+  visibility: hidden; /* Also hide it from the accessibility tree when not hovered */
+  transition: opacity 0.3s, visibility 0.3s; /* Smooth transition for visibility and opacity */
+}
+
+.heart-icon:hover {
+  color: red; /* Color changes on hover */
+}
+
+.heart-icon.active {
+  color: red; /* Active state color */
+  content: '\f004'; /* CSS content code for solid heart */
+}
+
+.top-right-icon {
+  position: absolute;
+  top: 8px;  /* Adjust as necessary */
+  right: 8px;  /* Adjust as necessary */
+  font-size: 20px;  /* Adjust icon size as necessary */
+}
+
+.bottom-right-text {
+  position: absolute;
+  bottom: 8px;  /* Adjust as necessary */
+  right: 8px;  /* Adjust as necessary */
+  font-size: 20px;  /* Smaller font size for the text field */
+}

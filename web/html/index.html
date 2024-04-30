@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Dashboard</title>
+    <link rel="stylesheet" href="../css/styles.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  </head>
+
+  <body>
+    <script src="../js/scripts.js"></script>
+    <header class="header">
+      <div class="header-content">
+        <div class="logo-container">
+          <img src="../img/logo1.webp" alt="Logo" class="logo">
+          <span class="website-name-EZ">EZ</span>
+          <span class="website-name-Stocks">Stocks</span>
+        </div>
+        <nav class="navigation">
+          <button id="stocksTab" class="tab active">Stocks</button>
+          <button id="cryptoTab" class="tab">Crypto</button>
+        </nav>
+      </div>
+    </header>
+    <main class="main-content">
+      <div class="top-bar">
+        <input type="search" class="search-bar" placeholder="Search...">
+      </div>
+      <div class="filter-container">
+        <button class="filter-button" id="mentionsFilter">
+          Mentions <i class="fa-solid fa-arrows-up-down" id="iconMentions"></i>
+        </button>
+        <div class="time-filter-container">
+          <button class="filter-button" id="timeFilter">Choose a time frame</button>
+          <div class="dropdown" id="timeDropdown" hidden>
+            <div class="dropdown-option">Today</div>
+            <div class="dropdown-option">Last 7 days</div>
+            <div class="dropdown-option">Last 30 days</div>
+            <div class="dropdown-option">YTD</div>
+          </div>
+        </div>
+        <button class="filter-button" id="favoritesFilter">Favorites</button>
+        <button class="filter-button rightmost" id = "resetFilter">X</button>
+      </div>
+      <section class="stock-grid">
+        <!-- Populate with more stock items as necessary -->
+        <div class="stock-item green">YNDX
+          <i class="far fa-heart heart-icon"></i>
+          <i class="fa-solid fa-chevron-up top-right-icon"></i>  
+          <div class="bottom-right-text">5</div>
+        </div>
+        <div class="stock-item green">SBER</div>
+        <div class="stock-item green">Stock 3</div>
+        <div class="stock-item green">Stock 4</div>
+        <div class="stock-item green">Stock 5</div>
+        <div class="stock-item green">Stock 6</div>
+        <div class="stock-item green">Stock 7</div>
+        <div class="stock-item green">Stock 8</div>
+        <div class="stock-item green">Stock 9</div>
+        <div class="stock-item red">Stock 10</div>
+        <div class="stock-item red">Stock 11</div>
+        <div class="stock-item red">Stock 12</div>
+        <!-- ... -->
+      </section>
+    </main>
+  </body>
+
+</html>
