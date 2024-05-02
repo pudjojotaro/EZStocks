@@ -14,6 +14,14 @@
     "wdth" 100;
 }
 
+.stock-item[style*="display: none"] {
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  padding: 0 10px;
+  margin: 0 10px;
+}
+
 body,
 html {
   margin: 0;
@@ -347,6 +355,8 @@ html {
   text-transform: uppercase;
   /* capitalizes text */
   cursor: default;
+  transition: all 0.3s ease;
+  opacity: 1;
 }
 
 .stock-item:hover {
