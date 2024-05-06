@@ -1,15 +1,38 @@
 document.addEventListener('DOMContentLoaded', (event) => {
     const favoritesFilter = document.getElementById('favoritesFilter');
+    let allStockItems = document.querySelectorAll('.stock-item'); // Ensure this is updated if items can change dynamically
 
     favoritesFilter.addEventListener('click', function() {
-      this.classList.toggle('active'); // Toggle the 'active' class on click
+        this.classList.toggle('active'); // Toggle the 'active' class on click
+        const isActive = this.classList.contains('active');
 
+        updateStockItemsVisibility(isActive);
     });
+
+    function updateStockItemsVisibility(isActive) {
+        allStockItems = document.querySelectorAll('.stock-item'); // Re-fetch items to capture any updates
+        
+        if (isActive) {
+            allStockItems.forEach(item => {
+                const heartIcon = item.querySelector('.heart-icon');
+                if (!heartIcon || !heartIcon.classList.contains('active')) {
+                    item.style.display = 'none'; // Hide non-favorites
+                }
+            });
+        } else {
+            allStockItems.forEach(item => {
+                item.style.display = ''; // Show all items
+            });
+        }
+    }
+
+
     const stockTickers = [
-      'GAZP', 'LKOH', 'MGNT', 'NVTK', 'ROSN', 'SBER', 'SNGS', 'TATN', 'VTBR',
-      'YNDX', 'PLZL', 'POLY', 'ALRS', 'CHMF', 'NLMK', 'MTSS', 'MOEX', 'IRAO',
-      'HYDR', 'FEES', 'RTKM', 'MAGN', 'AFLT', 'SFIN', 'TRNFP', 'RSTI', 'SIBN',
-      'RNFT', 'PIKK', 'LSRG', 'CBOM', 'PHOR', 'OGKB', 'VSMO', 'AMEZ', 'MSNG'
+      'GAZP', 'SBER', 'LKOH', 'ROSN', 'VTBR', 'GMKN', 'NVTK', 'YNDX', 'MGNT',
+      'CHMF', 'NLMK', 'PLZL', 'SNGS', 'TATN', 'ALRS', 'URKA', 'FIVE', 'RUAL',
+      'MAIL', 'MVID', 'POLY', 'PIKK', 'PHOR', 'AFLT', 'FLOT', 'IRAO', 'RSTI',
+      'HYDR', 'MOEX', 'BANE', 'MTSS', 'TRNFP', 'MFON', 'AGRO', 'NKNC', 'UWGN',
+      'BSPB', 'TRMK', 'UPRO', 'MRKV', 'AKRN', 'NYUR'
   ];
 
   stockTickers.forEach(ticker => {
@@ -36,6 +59,16 @@ document.addEventListener('DOMContentLoaded', (event) => {
             }
         });
     });
+
+    document.querySelector('.stock-grid').addEventListener('click', function(event) {
+      if (event.target.classList.contains('heart-icon')) {
+          // Toggle the 'active' class to change appearance
+          event.target.classList.toggle('active');
+          // Switch between solid and outline heart icons
+          event.target.classList.toggle('fas');
+          event.target.classList.toggle('far');
+      }
+  });
 
 
     const stocksTab = document.getElementById('stocksTab');
@@ -79,7 +112,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           break;
       }
     }
-
+    
     function sortStockItemsAlphabetically() {
       const container = document.querySelector('.stock-grid');
       let items = Array.from(container.querySelectorAll('.stock-item'));
@@ -155,17 +188,38 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     const resetFiltersButton = document.getElementById('resetFilter');
     const filterButtons = document.querySelectorAll('.filter-button');
+    const stockItems = document.querySelectorAll('.stock-item'); // Assuming this is the class for stock items
+    const favoriteIcons = document.querySelectorAll('.heart-icon'); // Assuming this is the class for the favorite icons
 
     resetFiltersButton.addEventListener('click', () => {
-      // Reset each filter button to its initial state
-      filterButtons.forEach(button => {
-        if (button.id === 'timeFilter') {
-          button.textContent = 'Choose a time frame'; // Reset to default text
+        // Reset each filter button to its initial state
+        filterButtons.forEach(button => {
+            if (button.id === 'timeFilter') {
+                button.textContent = 'Choose a time frame'; // Reset to default text
+            }
+            button.classList.remove('active'); // Remove the 'active' class to reset color
+        });
+
+        // Ensure all stock items are visible
+        stockItems.forEach(item => {
+            item.style.display = ''; // Make sure all stock items are visible
+        });
+        sortStockItemsAlphabetically();
+        if (mentionsFilter) {
+          mentionsFilter.innerHTML = `Mentions <i class="fa-solid fa-arrows-up-down" id="iconMentions"></i>`;
         }
-        button.classList.remove('active'); // Remove the 'selected' class to reset color
-      });
-      // Hide the dropdown if it's visible
-      timeDropdown.hidden = true;
+        // Optionally, reset the 'Show Favorites' button text if it toggles
+        const favoritesFilterButton = document.getElementById('favoritesFilter');
+        if (favoritesFilterButton) {
+            favoritesFilterButton.textContent = 'Favorites';
+            favoritesFilterButton.classList.remove('active'); // Reset any toggled states
+        }
+
+        // Hide the dropdown if it's visible
+        const timeDropdown = document.getElementById('timeDropdown'); // Ensure this is correct
+        if (timeDropdown) {
+            timeDropdown.hidden = true;
+        }
     });
 
 
