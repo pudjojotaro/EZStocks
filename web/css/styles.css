@@ -405,3 +405,16 @@ html {
   right: 8px;  /* Adjust as necessary */
   font-size: 20px;  /* Smaller font size for the text field */
 }
+
+.svg-container img {
+  width: 40px; /* Set the size of the SVG */
+  height: 40px;
+  border-radius: 10px; /* Makes the image rounded */
+  margin-right: 10px; /* Space between the SVG and the ticker name */
+
+}
+
+.svg-container {
+  margin-left: -30px; /* Additional space from the left edge specifically for the SVG */
+  margin-top: 10px;
+}
