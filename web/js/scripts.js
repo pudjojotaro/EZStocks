@@ -295,14 +295,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
             }
         });
     });
-
-    document.querySelector('.stock-grid').addEventListener('click', function(event) {
-        if (event.target.classList.contains('heart-icon')) {
-            event.target.classList.toggle('active');
-            event.target.classList.toggle('fas');
-            event.target.classList.toggle('far');
-        }
-    });
     document.querySelector('.stock-grid').addEventListener('click', (event) => {
         console.log("Clicked element:", event.target);
         if (event.target.classList.contains('heart-icon')) {
@@ -461,14 +453,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
         if (timeDropdown) {
             timeDropdown.hidden = true;
         }
-    });
-
-
-    const heartIcon = document.querySelector('.heart-icon');
-    heartIcon.addEventListener('click', function() {
-        this.classList.toggle('active'); // Toggle the 'active' class to change appearance
-        this.classList.toggle('fas'); // Switch to solid heart
-        this.classList.toggle('far'); // Switch from regular (outline) heart
     });
 
     function updateOrCreateStockItem(stockId, stockName, iconClass, textContent, company_name, alphabeticalIndex) {
