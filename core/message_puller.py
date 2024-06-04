@@ -13,13 +13,6 @@ async def get_chat_IDS():
 
 
 async def main():
-    channel_id = -1002067676999  # Replace with your actual channel ID
-    async with app:
-        async for message in app.get_chat_history(channel_id):
-            # Check if the message has text before trying to print it
-            if message.text:
-                print(f"Message ID: {message.id}, Text: {message.text}")
-            else:
-                print(f"Message ID: {message.id}, [No text available]")
+    await get_chat_IDS()
 
 app.run(main())
