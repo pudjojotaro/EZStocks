@@ -12,6 +12,7 @@ async def get_chat_IDS():
             print(f"Name: {dialog.chat.title or dialog.chat.first_name}, ID: {dialog.chat.id}")
 
 
+
 async def main():
     await get_chat_IDS()
 
