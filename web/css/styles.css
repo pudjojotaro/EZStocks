@@ -418,3 +418,16 @@ html {
   margin-left: -30px; /* Additional space from the left edge specifically for the SVG */
   margin-top: 10px;
 }
+
+
+.company-name {
+  position: absolute;
+  bottom: 10px; /* Adjust as necessary */
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px; /* Smaller font for company name */
+  max-width: 100px; /* Adjust width as needed */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

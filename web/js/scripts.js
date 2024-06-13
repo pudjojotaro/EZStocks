@@ -1,4 +1,23 @@
 document.addEventListener('DOMContentLoaded', (event) => {
+
+    const url = 'https://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/SBER.json?iss.meta=off&iss.only=marketdata&marketdata.columns=SECID,LAST';
+
+fetch(url)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+        return response.json();
+    })
+    .then(data => {
+        const marketData = data.marketdata.data;
+        marketData.forEach(entry => {
+            console.log(`SECID: ${entry[0]}, LAST: ${entry[1]}`);
+        });
+    })
+    .catch(error => {
+        console.error('There has been a problem with your fetch operation:', error);
+    });
     const favoritesFilter = document.getElementById('favoritesFilter');
     let allStockItems = document.querySelectorAll('.stock-item'); // Ensure this is updated if items can change dynamically
 
@@ -31,7 +50,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             return null; // Return null to indicate no SVG should be used
         }
         if (svgMapping[ticker]) {
-            console.log(ticker + " uses a specific SVG index: " + svgMapping[ticker]);
+            //console.log(ticker + " uses a specific SVG index: " + svgMapping[ticker]);
             return svgMapping[ticker]; // Return specific SVG index if defined
         }
         // Calculate dynamic index for tickers not in the mapping
@@ -45,7 +64,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 count++;
             }
         }
-        console.log(ticker + " dynamically assigned SVG index: " + count);
+        //console.log(ticker + " dynamically assigned SVG index: " + count);
         return count;
     }
 
@@ -80,7 +99,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         ["ASSB", "Astrakhan Energo Sbyt"],
         ["ASTR", "Astra Group"],
         ["AVAN", "AKB 'AVANGARD'"],
-        ["BANE", "Bashneft ANK"],
+        ["BANE", "Bashneft BANK"],
         ["BELU", "NovaBev Group"],
         ["BLNG", "Belon"],
         ["BRZL", "Buryatzoloto"],
@@ -268,12 +287,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
         stockTickers.push(tickers_names[i][0]);
         //console.log(tickers_names[i]);
     }
-    console.log(stockTickers);
+    //console.log(stockTickers);
 
     stockTickers.forEach((ticker, index) => {
         const randomNum = Math.floor(Math.random() * 15) + 1; // Random number from 1 to 15
         const chevronIcon = Math.random() < 0.5 ? 'fa-chevron-up' : 'fa-chevron-down'; // 50% chance for up or down
-        updateOrCreateStockItem(`stock${ticker}`, ticker, chevronIcon, randomNum.toString(), "txt", index);
+        updateOrCreateStockItem(`stock${ticker}`, ticker, chevronIcon, randomNum.toString(), tickers_names[index][1], index); // adding names 
+        console.log(ticker)
     });
 
     sortStockItemsAlphabetically()
@@ -296,7 +316,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
         });
     });
     document.querySelector('.stock-grid').addEventListener('click', (event) => {
-        console.log("Clicked element:", event.target);
         if (event.target.classList.contains('heart-icon')) {
             event.target.classList.toggle('active');
             event.target.classList.toggle('far');
@@ -470,7 +489,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         updateElement(stockItem, '.heart-icon', 'i', '', 'far fa-heart heart-icon');
         updateElement(stockItem, '.top-right-icon', 'i', '', `fa-solid ${iconClass} top-right-icon`);
         updateElement(stockItem, '.bottom-right-text', 'div', textContent, "bottom-right-text");
-        //updateElement(stockItem, '.company-name', 'div', company_name, "company-name");
+        updateElement(stockItem, '.company-name', 'div', company_name, "company-name");
 
 
         function updateElement(parent, selector, elementType, text, className) {
@@ -492,7 +511,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
             }
             const svgIndex = getSvgIndex(ticker, alphabeticalIndex);
             if (svgIndex === null) {
-                console.log('No SVG for ' + ticker);
                 svgContainer.innerHTML = ''; // Clear any existing SVG or ensure none is added
             } else {
                 svgContainer.innerHTML = `<img src="web/img/svg_${svgIndex}.svg" alt="Logo for ${ticker}">`;
