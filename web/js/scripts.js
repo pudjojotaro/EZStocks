@@ -1,23 +1,6 @@
 document.addEventListener('DOMContentLoaded', (event) => {
 
-    const url = 'https://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/SBER.json?iss.meta=off&iss.only=marketdata&marketdata.columns=SECID,LAST';
-
-fetch(url)
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok ' + response.statusText);
-        }
-        return response.json();
-    })
-    .then(data => {
-        const marketData = data.marketdata.data;
-        marketData.forEach(entry => {
-            console.log(`SECID: ${entry[0]}, LAST: ${entry[1]}`);
-        });
-    })
-    .catch(error => {
-        console.error('There has been a problem with your fetch operation:', error);
-    });
+ 
     const favoritesFilter = document.getElementById('favoritesFilter');
     let allStockItems = document.querySelectorAll('.stock-item'); // Ensure this is updated if items can change dynamically
 
@@ -281,22 +264,68 @@ fetch(url)
     ]
 
 
-    //console.log(tickers_names)
     const stockTickers = [];
     for (let i = 0; i < tickers_names.length; i++) {
         stockTickers.push(tickers_names[i][0]);
-        //console.log(tickers_names[i]);
-    }
-    //console.log(stockTickers);
 
-    stockTickers.forEach((ticker, index) => {
+    }
+
+
+    async function getStockData(securityName) {
+        const baseUrl = 'https://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/';
+        const queryParams = '.json?iss.meta=off&iss.only=marketdata&marketdata.columns=SECID,LAST';
+        const url = `${baseUrl}${securityName}${queryParams}`;
+    
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            const data = await response.json();
+            const marketData = data.marketdata.data;
+            if (marketData.length > 0) {
+                return marketData[0][1]; // Return the LAST value
+            } else {
+                throw new Error('No market data found');
+            }
+        } catch (error) {
+            console.error('There has been a problem with your fetch operation:', error);
+            return null; // Return null in case of an error
+        }
+    }
+
+
+    //const url = 'https://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/SBER.json?iss.meta=off&iss.only=marketdata&marketdata.columns=SECID,LAST';
+
+
+
+
+
+    // Function to process each ticker
+    function processTicker(ticker, index) {
         const randomNum = Math.floor(Math.random() * 15) + 1; // Random number from 1 to 15
         const chevronIcon = Math.random() < 0.5 ? 'fa-chevron-up' : 'fa-chevron-down'; // 50% chance for up or down
-        updateOrCreateStockItem(`stock${ticker}`, ticker, chevronIcon, randomNum.toString(), tickers_names[index][1], index); // adding names 
-        console.log(ticker)
-    });
+        
+        return getStockData(ticker).then(lastValue => {
+            if (lastValue !== null) {
+                const price_tmp = lastValue; // Assign lastValue to price_tmp here
+                // Call updateOrCreateStockItem inside the .then block
+                updateOrCreateStockItem(`stock${ticker}`, ticker, chevronIcon, price_tmp.toString() + "₽", tickers_names[index][1], index); // adding names 
+            } else {
+                updateOrCreateStockItem(`stock${ticker}`, ticker, chevronIcon, "N/A", tickers_names[index][1], index); // adding names 
+                console.log(ticker);
+            }
+        });
+    }
 
-    sortStockItemsAlphabetically()
+    // Create an array of promises for each ticker
+    const promises = stockTickers.map((ticker, index) => processTicker(ticker, index));
+
+    // Wait for all promises to resolve
+    Promise.all(promises).then(() => {
+        // Call the sort function after all items are initialized
+        sortStockItemsAlphabetically();
+    });
 
     const searchInput = document.querySelector('.search-bar');
 

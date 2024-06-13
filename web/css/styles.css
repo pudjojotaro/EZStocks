@@ -345,6 +345,7 @@ html {
   background-color: #fafafa;
   border: 1px solid #d4d4d4;
   cursor: pointer;
+  font-family: 'Noto Sans';
   /* taller rectangles */
   display: flex;
   align-items: center;
@@ -399,11 +400,26 @@ html {
   font-size: 20px;  /* Adjust icon size as necessary */
 }
 
+
 .bottom-right-text {
   position: absolute;
   bottom: 8px;  /* Adjust as necessary */
   right: 8px;  /* Adjust as necessary */
-  font-size: 20px;  /* Smaller font size for the text field */
+  font-size: 12px;  /* Smaller font size for the text field */
+}
+
+
+.company-name {
+  position: absolute;
+  bottom: 8px; /* Adjust as necessary */
+  left: 50%;
+  color:#8d8d8d;
+  transform: translateX(-50%);
+  font-size: 12px; /* Smaller font for company name */
+  max-width: 100px; /* Adjust width as needed */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .svg-container img {
@@ -419,15 +435,3 @@ html {
   margin-top: 10px;
 }
 
-
-.company-name {
-  position: absolute;
-  bottom: 10px; /* Adjust as necessary */
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 12px; /* Smaller font for company name */
-  max-width: 100px; /* Adjust width as needed */
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
