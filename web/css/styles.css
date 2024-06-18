@@ -61,11 +61,13 @@ html {
 
 
 .website-name-EZ {
+  font-size:1em;
   color: #30A119;
   font-family: 'FFMARK';
 }
 
 .website-name-Stocks {
+  font-size:1em;
   color: #000000;
   font-family: 'FFMARK';
 }
@@ -91,6 +93,41 @@ html {
   padding-right: 8px;
 }
 
+.right-section {
+  display: flex;
+  align-items: center;
+}
+
+
+#updateNamesButton { /*TODO: make the not selected option not clickable*/
+ 
+  font-size: 16px;
+  color: black;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-right: 20px;
+  font-size:0.9em;
+  font-family: "Noto Sans", sans-serif;
+}
+
+
+#updateNamesButton span {
+  cursor: default;
+  color: gray;
+}
+
+#updateNamesButton .selected {
+  cursor:pointer;
+  color: black;
+}
+
+
+#updateNamesButton .selected:hover {
+  color: red;
+  transition: color 0.3s;
+}
+
 .navigation {
 
   display: flex;
@@ -101,32 +138,31 @@ html {
 
 
 .navigation .tab {
-  padding: 10px 20px;
+  padding: 10px 20px; /* Keep the padding unchanged */
   border: none;
   background-color: transparent;
   color: #bbbbbb;
-  font-size: 0.8em;
+  font-size: 0.9em;
   cursor: pointer;
-  margin-bottom: -10px;
+  margin-bottom: -20px;
   transition: background-color 0.3s;
   display: flex;
   align-items: center;  /* Centers the text vertically */
   height: 100%;  /* Expand to fill the navigation height */
   box-sizing: border-box; 
   border-bottom: 2px solid transparent;
+  position: relative;
+  top: -8px; /* Move the text up */
 }
 
 .navigation .tab:hover {
-  /* Lighter shade on hover for high contrast */
   border-bottom: 2px solid #cccccc;
   color: #000000;
-  /* Change text color for readability on hover */
 }
 
 .navigation .tab.active {
   color: #000000;
   border-bottom: 2px solid #000000;
-  /* High contrast color */
 }
 
 

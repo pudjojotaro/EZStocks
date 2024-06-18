@@ -1,6 +1,24 @@
 document.addEventListener('DOMContentLoaded', (event) => {
+    let currentLanguage = 'EN'; // State variable to track the current language
 
- 
+    const updateNamesButton = document.getElementById('updateNamesButton');
+    const ruText = document.getElementById('ruText');
+    const enText = document.getElementById('enText');
+    enText.classList.remove('selected');
+    ruText.classList.add('selected');
+    updateNamesButton.addEventListener('click', () => {
+        updateStockNames();
+        if (currentLanguage === 'RU') {
+            ruText.classList.remove('selected');
+            enText.classList.add('selected');
+        } else {
+            enText.classList.remove('selected');
+            ruText.classList.add('selected');
+        }
+    });
+    
+    
+    
     const favoritesFilter = document.getElementById('favoritesFilter');
     let allStockItems = document.querySelectorAll('.stock-item'); // Ensure this is updated if items can change dynamically
 
@@ -68,6 +86,158 @@ document.addEventListener('DOMContentLoaded', (event) => {
         'ZILL': 179,
         'ZVEZ': 180
     };
+    const ticker_names_RU = [     
+        ['ЯТЭК', 'YAKG'],
+        ['Яндекс', 'YNDX'],
+        ['Яковлев', 'IRKT'],
+        ['ЮУНК', 'UNKL'],
+        ['Юнипро', 'UPRO'],
+        ['Южуралзолото ГК', 'UGLD'],
+        ['ЭсЭфАй', 'SFIN'],
+        ['Эн+', 'ENPG'],
+        ['ЭЛ5-Энерго', 'ELFV'],
+        ['ЧМК', 'CHMK'],
+        ['ЧЗПСН', 'PRFN'],
+        ['Циан АДР', 'CIAN'],
+        ['Центральный Телеграф - акции привилегированные', 'CNTLP'],
+        ['Центральный Телеграф', 'CNTL'],
+        ['ФСК Россети', 'FEES'],
+        ['ФосАгро', 'PHOR'],
+        ['Фармсинтез', 'LIFE'],
+        ['Трубная Металлургическая Компания', 'TRMK'],
+        ['Транснефть - привилегированные акции', 'TRNFP'],
+        ['ТНС энерго Воронеж', 'VRSB'],
+        ['ТКС Холдинг', 'TCSG'],
+        ['ТГК-2 - акции привилегированные', 'TGKBP'],
+        ['ТГК-2', 'TGKB'],
+        ['ТГК-14', 'TGKN'],
+        ['ТГК-1', 'TGKA'],
+        ['Таттелеком', 'TTLK'],
+        ['Татнефть - привилегированные акции', 'TATNP'],
+        ['Татнефть', 'TATN'],
+        ['Сургутнефтегаз - привилегированные акции', 'SNGSP'],
+        ['Сургутнефтегаз', 'SNGS'],
+        ['Софтлайн', 'SOFL'],
+        ['СОЛЛЕРС', 'SVAV'],
+        ['Совкомфлот', 'FLOT'],
+        ['Совкомбанк', 'SVCB'],
+        ['Селигдар', 'SELG'],
+        ['Сегежа', 'SGZH'],
+        ['Северсталь', 'CHMF'],
+        ['Сбер Банк ап', 'SBERP'],
+        ['Сбер Банк', 'SBER'],
+        ['Саратовский НПЗ - акции привилегированные', 'KRKNP'],
+        ['РуссНефть', 'RNFT'],
+        ['Русолово', 'ROLO'],
+        ['РусГидро', 'HYDR'],
+        ['РУСАЛ', 'RUAL'],
+        ['РусАгро', 'AGRO'],
+        ['Ростелеком - Привилегированные акции', 'RTKMP'],
+        ['Ростелеком', 'RTKM'],
+        ['Россети Центр и Приволжье', 'MRKP'],
+        ['Россети Центр', 'MRKC'],
+        ['Россети Урал', 'MRKU'],
+        ['Россети Северо-Запад', 'MRKZ'],
+        ['Россети Московский регион', 'MSRS'],
+        ['Роснефть', 'ROSN'],
+        ['РКК Энергия им.С.П.Королева', 'RKKE'],
+        ['Ренессанс Страхование', 'RENI'],
+        ['РБК', 'RBCM'],
+        ['Распадская', 'RASP'],
+        ['Полюс', 'PLZL'],
+        ['ПИК', 'PIKK'],
+        ['Пермэнергосбыт - акции привилегированные', 'PMSBP'],
+        ['Пермэнергосбыт', 'PMSB'],
+        ['ОВК', 'UWGN'],
+        ['Объединенная авиастроительная корпорация', 'UNAC'],
+        ['Норильский никель', 'GMKN'],
+        ['НОВАТЭК', 'NVTK'],
+        ['НМТП', 'NMTP'],
+        ['НЛМК', 'NLMK'],
+        ['НКХП', 'NKHP'],
+        ['Нижнекамскнефтехим (привилегированные)', 'NKNCP'],
+        ['Нижнекамскнефтехим', 'NKNC'],
+        ['Наука-Связь', 'NSVZ'],
+        ['МФК Займер', 'ZAYM'],
+        ['МТС-Банк', 'MBNK'],
+        ['МТС', 'MTSS'],
+        ['МРСК Юга', 'MRKY'],
+        ['МРСК Сибири', 'MRKS'],
+        ['МРСК Волги', 'MRKV'],
+        ['Мосэнерго', 'MSNG'],
+        ['Мостотрест', 'MSTT'],
+        ['Московская Биржа', 'MOEX'],
+        ['Мосгорломбард', 'MGKL'],
+        ['ММК', 'MAGN'],
+        ['МКБ', 'CBOM'],
+        ['Мечел - Привилегированные акции', 'MTLRP'],
+        ['Мечел', 'MTLR'],
+        ['МГТС - акции привилегированные', 'MGTSP'],
+        ['Магнит', 'MGNT'],
+        ['М.Видео', 'MVID'],
+        ['ЛУКОЙЛ', 'LKOH'],
+        ['Ленэнерго - акции привилегированные', 'LSNGP'],
+        ['Ленэнерго', 'LSNG'],
+        ['Лента', 'LENT'],
+        ['Лензолото - привилегированные акции', 'LNZLP'],
+        ['Лензолото', 'LNZL'],
+        ['КуйбышевАзот - Акции привилегированные', 'KAZTP'],
+        ['КуйбышевАзот', 'KAZT'],
+        ['Красный Октябрь', 'KROT'],
+        ['КарМани', 'CARM'],
+        ['КАМАЗ', 'KMAZ'],
+        ['Калужская сбытовая компания', 'KLSB'],
+        ['Казаньоргсинтез - ап', 'KZOSP'],
+        ['Казаньоргсинтез - ао', 'KZOS'],
+        ['Интер РАО ЕЭС', 'IRAO'],
+        ['ИНАРКТИКА', 'AQUA'],
+        ['ЕвроТранс', 'EUTR'],
+        ['Европлан', 'LEAS'],
+        ['ДЭК', 'DVEC'],
+        ['Диасофт', 'DIAS'],
+        ['Детский Мир', 'DSKY'],
+        ['Делимобиль', 'DELI'],
+        ['ДВМП', 'FESH'],
+        ['ГТМ', 'GTRK'],
+        ['Группа Черкизово', 'GCHE'],
+        ['Группа ЛСР', 'LSRG'],
+        ['Группа Астра', 'ASTR'],
+        ['ГК Самолет', 'SMLT'],
+        ['Генетико', 'GECO'],
+        ['Газпром нефть', 'SIBN'],
+        ['Газпром', 'GAZP'],
+        ['Вторая генерирующая компания оптового рынка электроэнергии', 'OGKB'],
+        ['ВСМПО-АВИСМА', 'VSMO'],
+        ['ВК', 'VKCO'],
+        ['Белон', 'BLNG'],
+        ['Башнефть - привилегированные акции', 'BANEP'],
+        ['Башнефть', 'BANE'],
+        ['Банк Санкт-Петербург', 'BSPB'],
+        ['Банк ВТБ', 'VTBR'],
+        ['Аэрофлот', 'AFLT'],
+        ['Ашинский метзавод', 'AMEZ'],
+        ['АФК Система', 'AFKS'],
+        ['Артген', 'ABIO'],
+        ['Аптечная сеть 36,6', 'APTK'],
+        ['АЛРОСА', 'ALRS'],
+        ['Акрон', 'AKRN'],
+        ['Абрау-Дюрсо', 'ABRD'],
+        ['Whoosh', 'WUSH'],
+        ['United medical group', 'GEMC'],
+        ['QIWI', 'QIWI'],
+        ['Positive Technologies', 'POSI'],
+        ['Polymetal', 'POLY'],
+        ['Ozon Holdings PLC', 'OZON'],
+        ["O'Key Group SA", 'OKEY'],
+        ['Novabev Group', 'BELU'],
+        ['IVA Technologies', 'IVAT'],
+        ['HENDERSON', 'HNFG'],
+        ['HeadHunter Group PLC', 'HHRU'],
+        ['Globaltrans Investment PLC', 'GLTR'],
+        ['Fix Price Group', 'FIXP'],
+        ['Etalon Group PLC ГДР', 'ETLN']
+    ]
+
     const tickers_names = [
         ["ABIO", "Artgen"],
         ["ABRD", "Abrau-Durso"],
@@ -271,7 +441,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
 
 
-    async function getStockData(securityName) {
+
+    async function getLastStockPrice(securityName) {
         const baseUrl = 'https://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/';
         const queryParams = '.json?iss.meta=off&iss.only=marketdata&marketdata.columns=SECID,LAST';
         const url = `${baseUrl}${securityName}${queryParams}`;
@@ -282,6 +453,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 throw new Error('Network response was not ok ' + response.statusText);
             }
             const data = await response.json();
+            //console.log(data)
             const marketData = data.marketdata.data;
             if (marketData.length > 0) {
                 return marketData[0][1]; // Return the LAST value
@@ -306,11 +478,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
         const randomNum = Math.floor(Math.random() * 15) + 1; // Random number from 1 to 15
         const chevronIcon = Math.random() < 0.5 ? 'fa-chevron-up' : 'fa-chevron-down'; // 50% chance for up or down
         
-        return getStockData(ticker).then(lastValue => {
+        return getLastStockPrice(ticker).then(lastValue => {
             if (lastValue !== null) {
                 const price_tmp = lastValue; // Assign lastValue to price_tmp here
                 // Call updateOrCreateStockItem inside the .then block
-                updateOrCreateStockItem(`stock${ticker}`, ticker, chevronIcon, price_tmp.toString() + "₽", tickers_names[index][1], index); // adding names 
+                updateOrCreateStockItem(`stock${ticker}`, ticker, chevronIcon, price_tmp.toString() + " ₽", tickers_names[index][1], index); // adding names 
             } else {
                 updateOrCreateStockItem(`stock${ticker}`, ticker, chevronIcon, "N/A", tickers_names[index][1], index); // adding names 
                 console.log(ticker);
@@ -326,6 +498,48 @@ document.addEventListener('DOMContentLoaded', (event) => {
         // Call the sort function after all items are initialized
         sortStockItemsAlphabetically();
     });
+
+    // Function to get the Russian name by ticker
+    function getRussianNameByTicker(ticker) {
+        const found = ticker_names_RU.find(pair => pair[1] === ticker);
+        return found ? found[0] : null;
+    }
+
+
+    // Function to get the English name by ticker
+    function getEnglishNameByTicker(ticker) {
+        const found = tickers_names.find(pair => pair[0] === ticker);
+        return found ? found[1] : null;
+    }
+
+    // Function to update stock item names
+    function updateStockNames() {
+        stockTickers.forEach((ticker) => {
+            const stockItem = document.getElementById(`stock${ticker}`);
+            if (stockItem) {
+                const nameElement = stockItem.querySelector('.company-name');
+                if (nameElement) {
+                    if (currentLanguage === 'EN') {
+                        const russianName = getRussianNameByTicker(ticker);
+                        if (russianName) {
+                            nameElement.textContent = russianName;
+                        }
+                    } else {
+                        const englishName = getEnglishNameByTicker(ticker);
+                        if (englishName) {
+                            nameElement.textContent = englishName;
+                        }
+                    }
+                }
+            }
+        });
+
+
+        currentLanguage = currentLanguage === 'EN' ? 'RU' : 'EN';
+    }
+
+
+
 
     const searchInput = document.querySelector('.search-bar');
 
