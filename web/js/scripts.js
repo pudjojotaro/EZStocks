@@ -16,13 +16,30 @@ document.addEventListener('DOMContentLoaded', (event) => {
             ruText.classList.add('selected');
         }
     });
-    
-    
-    
+
+    async function fetchMessages() {
+        const response = await fetch('web/json/messages.json');
+        const messages = await response.json();
+        console.log("fetchMessages done")
+        return messages;
+    }
+
+    function countMentions(messages, tickerNames) {
+        let count = 0;
+        for (const [channelId, channelMessages] of Object.entries(messages)) {
+            for (const message of channelMessages) {
+                if (message.text && tickerNames.some(name => message.text.includes(name))) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
     const favoritesFilter = document.getElementById('favoritesFilter');
     let allStockItems = document.querySelectorAll('.stock-item'); // Ensure this is updated if items can change dynamically
 
-    favoritesFilter.addEventListener('click', function() {
+    favoritesFilter.addEventListener('click', function () {
         this.classList.toggle('active'); // Toggle the 'active' class on click
         const isActive = this.classList.contains('active');
 
@@ -86,7 +103,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         'ZILL': 179,
         'ZVEZ': 180
     };
-    const ticker_names_RU = [     
+    const ticker_names_RU = [
         ['ЯТЭК', 'YAKG'],
         ['Яндекс', 'YNDX'],
         ['Яковлев', 'IRKT'],
@@ -443,20 +460,26 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 
     async function getLastStockPrice(securityName) {
-        const baseUrl = 'https://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/';
-        const queryParams = '.json?iss.meta=off&iss.only=marketdata&marketdata.columns=SECID,LAST';
-        const url = `${baseUrl}${securityName}${queryParams}`;
-    
+        const url = 'web/json/stock_data.json'; // Path to your JSON file
+
         try {
             const response = await fetch(url);
             if (!response.ok) {
                 throw new Error('Network response was not ok ' + response.statusText);
             }
             const data = await response.json();
-            //console.log(data)
-            const marketData = data.marketdata.data;
-            if (marketData.length > 0) {
-                return marketData[0][1]; // Return the LAST value
+            const stockData = data[securityName];
+
+            if (stockData && Object.keys(stockData.prices).length > 0) {
+                // Get the latest date
+                const latestDate = Object.keys(stockData.prices).sort().pop();
+                const latestPrices = stockData.prices[latestDate].prices;
+                if (latestPrices.length > 0) {
+                    // Return the latest price
+                    return latestPrices[latestPrices.length - 1];
+                } else {
+                    throw new Error('No market data found for the latest date');
+                }
             } else {
                 throw new Error('No market data found');
             }
@@ -475,17 +498,17 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     // Function to process each ticker
     function processTicker(ticker, index) {
-        const randomNum = Math.floor(Math.random() * 15) + 1; // Random number from 1 to 15
-        const chevronIcon = Math.random() < 0.5 ? 'fa-chevron-up' : 'fa-chevron-down'; // 50% chance for up or down
-        
+        //xconst randomNum = Math.floor(Math.random() * 15) + 1; // Random number from 1 to 15
+        //const chevronIcon = Math.random() < 0.5 ? 'fa-chevron-up' : 'fa-chevron-down'; // 50% chance for up or down
+
         return getLastStockPrice(ticker).then(lastValue => {
             if (lastValue !== null) {
                 const price_tmp = lastValue; // Assign lastValue to price_tmp here
                 // Call updateOrCreateStockItem inside the .then block
-                updateOrCreateStockItem(`stock${ticker}`, ticker, chevronIcon, price_tmp.toString() + " ₽", tickers_names[index][1], index); // adding names 
+                updateOrCreateStockItem(`stock${ticker}`, ticker, "0", price_tmp.toString() + " ₽", tickers_names[index][1], index); // adding names 
             } else {
-                updateOrCreateStockItem(`stock${ticker}`, ticker, chevronIcon, "N/A", tickers_names[index][1], index); // adding names 
-                console.log(ticker);
+                updateOrCreateStockItem(`stock${ticker}`, ticker, "0", "N/A", tickers_names[index][1], index); // adding names 
+                //console.log(ticker);
             }
         });
     }
@@ -543,7 +566,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     const searchInput = document.querySelector('.search-bar');
 
-    searchInput.addEventListener('input', function() {
+    searchInput.addEventListener('input', function () {
         const query = this.value.toLowerCase().trim();
         const stocks = document.querySelectorAll('.stock-item');
 
@@ -569,7 +592,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const stocksTab = document.getElementById('stocksTab');
     const cryptoTab = document.getElementById('cryptoTab');
 
-    stocksTab.addEventListener('click', function() {
+    stocksTab.addEventListener('click', function () {
         if (!this.classList.contains('active')) {
             this.classList.add('active');
             cryptoTab.classList.remove('active');
@@ -577,7 +600,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }
     });
 
-    cryptoTab.addEventListener('click', function() {
+    cryptoTab.addEventListener('click', function () {
         if (!this.classList.contains('active')) {
             this.classList.add('active');
             stocksTab.classList.remove('active');
@@ -590,9 +613,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const iconMentions = document.getElementById('iconMentions');
     let currentState = 0; // 0 = default, 1 = first icon, 2 = second icon
 
-    mentionsFilter.addEventListener('click', function() {
+    mentionsFilter.addEventListener('click', function () {
         currentState = (currentState + 1) % 2; // Cycle through 0, 1, 2
-        sortStockItems((currentState + 1) % 2);
+        sortStockItemsMentions((currentState + 1) % 2);
         updateIcon();
     });
 
@@ -605,13 +628,35 @@ document.addEventListener('DOMContentLoaded', (event) => {
             case 1:
                 iconMentions.className = 'fa-solid fa-arrow-down-short-wide'; // Second alternative
                 break;
+            case 2:
+                iconMentions.className = "fa-solid fa-arrows-up-down"; // default
+                break;
+
         }
     }
+
+
+
+
+
+
+    const priceFilter = document.getElementById('priceFilter');
+    const iconPrice = document.getElementById('iconPrice');
+    let currentState1 = 0; // 0 = default, 1 = first icon, 2 = second icon
+
+    priceFilter.addEventListener('click', function () {
+        currentState1 = (currentState1 + 1) % 2; // Cycle through 0, 1, 2
+        sortStockItemsPrice((currentState1 + 1) % 2);
+        updateIcon_price();
+    });
+
+
+
 
     function sortStockItemsAlphabetically() {
         const container = document.querySelector('.stock-grid');
         let items = Array.from(container.querySelectorAll('.stock-item'));
-        items.sort(function(a, b) {
+        items.sort(function (a, b) {
             // Assuming the stock name is directly within the stock-item div.
             // Modify the selector if it's within a child element.
             const aName = a.textContent.trim(); // Get text content and trim whitespace
@@ -624,10 +669,28 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
 
 
-    function sortStockItems(order) {
+    function sortStockItemsMentions(order) {
         const container = document.querySelector('.stock-grid');
         let items = Array.from(container.querySelectorAll('.stock-item'));
-        items.sort(function(a, b) {
+        items.sort(function (a, b) {
+            const aValue = parseInt(a.querySelector('.top-right-icon').textContent, 10);
+            const bValue = parseInt(b.querySelector('.top-right-icon').textContent, 10);
+
+            if (order === 0) { // Ascending sort
+                return aValue - bValue;
+            } else { // Descending sort
+                return bValue - aValue;
+            }
+        });
+
+        // Re-append items in sorted order
+        items.forEach(item => container.appendChild(item));
+    }
+
+    function sortStockItemsPrice(order) {
+        const container = document.querySelector('.stock-grid');
+        let items = Array.from(container.querySelectorAll('.stock-item'));
+        items.sort(function (a, b) {
             const aValue = parseInt(a.querySelector('.bottom-right-text').textContent, 10);
             const bValue = parseInt(b.querySelector('.bottom-right-text').textContent, 10);
 
@@ -642,10 +705,27 @@ document.addEventListener('DOMContentLoaded', (event) => {
         items.forEach(item => container.appendChild(item));
     }
 
+
+    function updateIcon_price() {
+        switch (currentState1) {
+
+            case 0:
+                iconPrice.className = 'fa-solid fa-arrow-down-wide-short'; // First alternative
+                break;
+            case 1:
+                iconPrice.className = 'fa-solid fa-arrow-down-short-wide'; // Second alternative
+                break;
+            case 2:
+                iconPrice.className = "fa-solid fa-arrows-up-down"; // default
+                break;
+        }
+    }
+
+
     const timeFilterButton = document.getElementById('timeFilter');
     const timeDropdown = document.getElementById('timeDropdown');
     const timeOptions = document.querySelectorAll('.dropdown-option');
-
+    
     let maxWidthTime = 0;
 
     // Create a temporary element to measure the widths of options
@@ -685,7 +765,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const filterButtons = document.querySelectorAll('.filter-button');
     const stockItems = document.querySelectorAll('.stock-item'); // Assuming this is the class for stock items
     const favoriteIcons = document.querySelectorAll('.heart-icon'); // Assuming this is the class for the favorite icons
-
+    
     resetFiltersButton.addEventListener('click', () => {
         // Reset each filter button to its initial state
         filterButtons.forEach(button => {
@@ -700,9 +780,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
             item.style.display = ''; // Make sure all stock items are visible
         });
         sortStockItemsAlphabetically();
-        if (mentionsFilter) {
-            mentionsFilter.innerHTML = `Mentions <i class="fa-solid fa-arrows-up-down" id="iconMentions"></i>`;
-        }
+        currentState = 2;
+        currentState1 = 2;
+        updateIcon();
+        updateIcon_price();
+        currentState = 0;
+        currentState1 = 0;
         // Optionally, reset the 'Show Favorites' button text if it toggles
         const favoritesFilterButton = document.getElementById('favoritesFilter');
         if (favoritesFilterButton) {
@@ -717,25 +800,55 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }
     });
 
-    function updateOrCreateStockItem(stockId, stockName, iconClass, textContent, company_name, alphabeticalIndex) {
+    function updateElement(parent, selector, elementType, text, className) {
+        if (!parent) {
+            console.error(`Parent element is null when trying to update element ${selector}`);
+            return;
+        }
+        let element = parent.querySelector(selector);
+        if (!element) {
+            element = document.createElement(elementType);
+            parent.appendChild(element);
+        }
+        if (text) element.textContent = text;
+        if (className) element.className = className;
+    }
+
+    function updateOrCreateStockItem(stockId, stockName, mentionsCount, textContent, company_name, alphabeticalIndex) {
         let stockItem = document.querySelector('.stock-grid').querySelector(`#${stockId}`);
 
         if (!stockItem) {
+            //console.log(stockName)
             // Create the stock item div if it doesn't exist
             stockItem = document.createElement('div');
             stockItem.id = stockId;
-            stockItem.className = 'stock-item'; 
+            stockItem.className = 'stock-item';
             document.querySelector('.stock-grid').appendChild(stockItem);
+            // Create the anchor element
+            anchor = document.createElement('a');
+            anchor.href = `stock.html?stock=${stockName}`;
+            anchor.className = 'stock-link'; // Add the class to the anchor
+            stockItem.appendChild(anchor);
+            //document.querySelector('.stock-grid').appendChild(anchor);
         }
+        else {
+            anchor = stockItem.parentElement;
+            //console.log("123")
+        }
+        //console.log(stockId)
         updateSvg(stockItem, stockName, alphabeticalIndex);
         updateElement(stockItem, '.stock-name', 'div', stockName);
         updateElement(stockItem, '.heart-icon', 'i', '', 'far fa-heart heart-icon');
-        updateElement(stockItem, '.top-right-icon', 'i', '', `fa-solid ${iconClass} top-right-icon`);
+        updateElement(stockItem, '.top-right-icon', 'div', mentionsCount, `top-right-icon`);
         updateElement(stockItem, '.bottom-right-text', 'div', textContent, "bottom-right-text");
         updateElement(stockItem, '.company-name', 'div', company_name, "company-name");
 
 
         function updateElement(parent, selector, elementType, text, className) {
+            if (!parent) {
+                console.error(`Parent element is null when trying to update element ${selector}`);
+                return;
+            }
             let element = parent.querySelector(selector);
             if (!element) {
                 element = document.createElement(elementType);
@@ -744,7 +857,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             if (text) element.textContent = text;
             if (className) element.className = className;
         }
-
+    
         function updateSvg(stockItem, ticker, alphabeticalIndex) {
             let svgContainer = stockItem.querySelector('.svg-container');
             if (!svgContainer) {
@@ -758,10 +871,39 @@ document.addEventListener('DOMContentLoaded', (event) => {
             } else {
                 svgContainer.innerHTML = `<img src="web/img/svg_${svgIndex}.svg" alt="Logo for ${ticker}">`;
             }
-
         }
+
     }
+    function timeout(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    async function sleep(fn, ...args) {
+        await timeout(3000);
+        return fn(...args);
+    }
+    async function main() {
+        const messages = await fetchMessages();
+        
+        tickers_names.forEach(([ticker, companyName]) => {
+            const tickerNames = [ticker, companyName];
 
+            // Adding all Russian names for the corresponding English ticker
+            ticker_names_RU.forEach(([ruName, enTicker]) => {
+                if (enTicker === ticker) {
+                    tickerNames.push(ruName);
+                }
+            });
+            // console.log(tickerNames) works as intended
+            const mentionsCount = countMentions(messages, tickerNames);
+            //console.log(mentionsCount)
+            //console.log(ticker)
+            let stockItem = document.querySelector('.stock-grid').querySelector(`#${"stock" + ticker}`);
+            updateElement(stockItem, '.top-right-icon', 'div', mentionsCount, `top-right-icon`);
 
+        });
+    }
+    setTimeout(() => {
+        main();
+      }, 1000);
 
 });

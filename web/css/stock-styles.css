@@ -1,0 +1,313 @@
+@font-face {
+    font-family: 'FFMARK';  
+    src: url('../fonts/FontFont_FF.Mark.Pro.Heavy.otf') format('opentype');  
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  .noto-sans-NotoSansFont {
+    font-family: "Noto Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 100;
+    font-style: normal;
+    font-variation-settings:
+      "wdth" 100;
+  }
+  
+  .stock-item[style*="display: none"] {
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    padding: 0 10px;
+    margin: 0 10px;
+  }
+  
+  body,
+  html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Noto Sans', sans-serif;
+    font-weight: 400;  
+    background-color: #f0f0f0;
+  }
+  
+  .header {
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff; /* Set header background to white */
+    border-bottom: 1px solid #cccccc;
+    box-sizing: border-box; 
+  }
+  
+  .header::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -20px; /* Extend slightly beyond the bottom of the header */
+    height: 20px; /* Height of the gradient effect */
+    background: linear-gradient(to bottom, rgba(28, 28, 28, 0.1), #f0f0f0);
+    z-index: -1; /* Ensure it's under the content for clickable items in the header */
+  }
+  
+  
+  
+  .website-name-EZ {
+    font-size:1em;
+    color: #30A119;
+    font-family: 'FFMARK';
+  }
+  
+  .website-name-Stocks {
+    font-size:1em;
+    color: #000000;
+    font-family: 'FFMARK';
+  }
+  .header-content {
+    width: 100%;
+    max-width: 1000px;
+    /* or your desired maximum width */
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logo-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo {
+    /* Adjust the size of your logo */
+    height: 25px;
+    
+    padding-right: 8px;
+  }
+  
+  .right-section {
+    display: flex;
+    align-items: center;
+  }
+  
+  
+  #updateNamesButton { /*TODO: make the not selected option not clickable*/
+   
+    font-size: 16px;
+    color: black;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-right: 20px;
+    font-size:0.9em;
+    font-family: "Noto Sans", sans-serif;
+  }
+  
+  
+  #updateNamesButton span {
+    cursor: default;
+    color: gray;
+  }
+  
+  #updateNamesButton .selected {
+    cursor:pointer;
+    color: black;
+  }
+  
+  
+  #updateNamesButton .selected:hover {
+    color: red;
+    transition: color 0.3s;
+  }
+  
+
+
+  
+  @media (max-width: 600px) 
+  {
+    .sidebar {
+      display: none;
+    }
+  
+    .main-content,
+    .top-bar,
+    .filter-container {
+      margin-left: 0;
+      /* Full width on smaller screens */
+      padding-left: 20px;
+      /* Add some padding */
+    }
+  }
+  
+  .main-content {
+    /*margin-left: 160px;*/
+    /* Same as sidebar width */
+    padding: 80px 20px 20px 20px;
+    /* Account for header height */
+  }
+  
+  .main-content {
+    margin-left: auto;
+    /* Aligns content to the center of their container */
+    margin-right: auto;
+    /* Aligns content to the center of their container */
+    max-width: 1000px;
+    /* Adjust as needed, should match or be less than the main content's width */
+  }
+  
+  .search-bar {
+    width: 100%;
+    height: 50px;
+    /* Allows the search bar to take the full width of its container */
+    padding: 8px;
+    margin-bottom: 10px;
+    outline: none; /* Removes the default focus outline */
+    border: 1px solid transparent;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease; /* Smooth transition for the border color */
+    /* Space between search bar and filters */
+    background-color: #fafafa;
+    border-radius: 10px;
+    font-family: 'Noto Sans';
+  }
+  
+  
+  .search-bar:focus {
+    border: 1px solid #cccccc; /* Even darker border when the input is focused */
+    background-color: #fff; /* Brightens up on focus */
+  }
+  
+
+  
+  @media screen and (max-width: 1200px) {
+    /* If necessary, adjust padding or margins specifically for this viewport range */
+    .top-bar,
+    .filter-container,
+    .stock-grid {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+  }
+  
+
+  .heart-icon {
+    z-index:3;
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    color: grey;  /* Initial color for the outline */
+    font-size: 20px; /* Adjust size as needed */
+    cursor: pointer; /* Indicates it's clickable */
+    opacity: 0; /* Start with the icon invisible */
+    visibility: hidden; /* Also hide it from the accessibility tree when not hovered */
+    transition: opacity 0.3s, visibility 0.3s; /* Smooth transition for visibility and opacity */
+  }
+  
+  .heart-icon:hover {
+    color: red; /* Color changes on hover */
+  }
+  
+  .heart-icon.active {
+    color: red; /* Active state color */
+    content: '\f004'; /* CSS content code for solid heart */
+  }
+  
+  #stock-svg-container img {
+    width: 40px; /* Set the size of the SVG */
+    height: 40px;
+    border-radius: 50%; /* Makes the image rounded */
+    margin-right: 10px; /* Space between the SVG and the ticker name */
+  
+  }
+  
+.stock-header {
+    display: flex;
+    align-items: center;
+}
+  #stock-svg-container {
+    margin-top: -10px;
+  }
+  
+  
+  .stock-details {
+    background-color: white;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+}
+
+.stock-details h1 {
+    margin-top: 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.prices {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.price-item {
+    border-radius: 10px;
+    color: #000;
+    padding: 10px 10px;
+    background-color: #fafafa;
+    border: 1px solid #d4d4d4;
+
+    width: 22%;
+    text-align: center;
+}
+
+.price-item h2 {
+    margin: 0 0 10px;
+    font-size: 18px;
+}
+
+.price-item p {
+    font-size: 16px;
+    color: #4CAF50;
+}
+
+.wiki-overview {
+    background-color: white;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+}
+
+.wiki-overview h2 {
+    margin-top: 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.wiki-overview p {
+    font-size: 16px;
+}
+
+.message {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+}
+
+.message p {
+    margin: 5px 0;
+}
+
+.message .message-date {
+    font-size: 0.9em;
+    color: #888;
+}
+

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/web/img/favicon.ico">
+    <link rel="stylesheet" href="web/css/stock-styles.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    
+    <title>Stock Details</title>
+    <link rel="stylesheet" href="web/css/stock-styles.css">
+</head>
+<body>
+    <script src="web/js/stock-scripts.js"></script>
+    <header class="header">
+        <div class="header-content">
+          <div class="logo-container">
+            <img src="web/img/logo1.webp" alt="Logo" class="logo">
+            <span class="website-name-EZ">EZ</span>
+            <span class="website-name-Stocks">Stocks</span>
+          </div>
+          <div class="right-section">
+            <button id="updateNamesButton"><span id="ruText">Ru</span> / <span id="enText">En</span></button>
+        </div>
+        </div>
+      </header>
+      <main class="main-content">
+        <div class="top-bar">
+          <input type="search" class="search-bar" placeholder="Search...">
+        </div>
+        <section class="stock-details">
+            <div class = "stock-header">
+                <div id="stock-svg-container"></div> 
+                <h1 id="stock-title">Stock Details</h1>
+            </div>
+            <div class="prices">
+                <div class="price-item">
+                    <h2>Current Price</h2>
+                    <p id="current-price">Loading...</p>
+                </div>
+                <div class="price-item">
+                    <h2>Open Price</h2>
+                    <p id="open-price">Loading...</p>
+                </div>
+                <div class="price-item">
+                    <h2>Max Price</h2>
+                    <p id="max-price">Loading...</p>
+                </div>
+                <div class="price-item">
+                    <h2>Lowest Price</h2>
+                    <p id="lowest-price">Loading...</p>
+                </div>
+            </div>
+        </section>
+        <section class="wiki-overview">
+            <h2>Company Overview</h2>
+            <p id="overview">Loading...</p>
+        </section>
+        <h2>Messages</h2>
+        <div id="messages-container"></div>
+      </main>
+    </body>
+  
+  </html>
+  
+</body>
+</html>
