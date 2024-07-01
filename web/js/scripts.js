@@ -1,4 +1,35 @@
 document.addEventListener('DOMContentLoaded', (event) => {
+    endDate_tmp = new Date()
+    startDate_tmp = new Date(new Date().getFullYear(), 0, 1);
+
+
+
+
+    setTimeout(() => {
+        updateMentionsCount(startDate_tmp, endDate_tmp);
+      }, 1000);
+
+    let scroll_button = document.getElementById("scrollToTopBtn");
+
+    // When the user scrolls down 20px from the top of the document, show the button
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            scroll_button.style.display = "block";
+        } else {
+            scroll_button.style.display = "none";
+        }
+    }
+
+    // When the user clicks on the button, scroll to the top of the document
+    scroll_button.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+
+
+
     let currentLanguage = 'EN'; // State variable to track the current language
 
     const updateNamesButton = document.getElementById('updateNamesButton');
@@ -24,11 +55,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
         return messages;
     }
 
-    function countMentions(messages, tickerNames) {
+    function countMentions(messages, tickerNames, startDate, endDate) {
         let count = 0;
         for (const [channelId, channelMessages] of Object.entries(messages)) {
             for (const message of channelMessages) {
-                if (message.text && tickerNames.some(name => message.text.includes(name))) {
+                const messageDate = new Date(message.date);
+                if (messageDate >= startDate && messageDate <= endDate && message.text && tickerNames.some(name => message.text.includes(name))) {
                     count++;
                 }
             }
@@ -754,12 +786,59 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     // Set the button text to the selected option and hide the dropdown
     timeOptions.forEach(option => {
+        
         option.addEventListener('click', () => {
             timeFilterButton.textContent = option.textContent;
             timeFilterButton.classList.add('active');
             timeDropdown.hidden = true;
+    
+            // Get the selected time frame
+            const timeFrame = option.getAttribute('data-timeframe');
+            //console.log(timeFrame)
+            // Calculate start and end dates based on the selected time frame
+            const endDate = new Date();
+            let startDate;
+            /*if (timeFrame === 'Today') {
+                startDate = new Date();
+            } else */if (timeFrame === 'last7days') {
+                startDate = new Date();
+                startDate.setDate(endDate.getDate() - 7);
+            } else if (timeFrame === 'last30days') {
+                startDate = new Date();
+                startDate.setDate(endDate.getDate() - 30);
+            } else if (timeFrame === 'ytd') {
+                startDate = new Date(new Date().getFullYear(), 0, 1);
+            }
+    
+            // Update mentions count based on the selected time frame
+            setTimeout(() => {
+                updateMentionsCount(startDate, endDate);
+              }, 1000);
+            
         });
     });
+
+
+    async function updateMentionsCount(startDate, endDate) {
+        const messages = await fetchMessages();
+        
+        tickers_names.forEach(([ticker, companyName]) => {
+            const tickerNames = [ticker, companyName];
+    
+            // Adding all Russian names for the corresponding English ticker
+            ticker_names_RU.forEach(([ruName, enTicker]) => {
+                if (enTicker === ticker) {
+                    tickerNames.push(ruName);
+                }
+            });
+    
+            const mentionsCount = countMentions(messages, tickerNames, startDate, endDate);
+            
+            let stockItem = document.querySelector('.stock-grid').querySelector(`#${"stock" + ticker}`);
+            updateElement(stockItem, '.top-right-icon', 'div', mentionsCount, `top-right-icon`);
+        });
+    }
+    
 
     const resetFiltersButton = document.getElementById('resetFilter');
     const filterButtons = document.querySelectorAll('.filter-button');

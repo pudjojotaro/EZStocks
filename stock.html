@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="/web/img/favicon.ico">
     <link rel="stylesheet" href="web/css/stock-styles.css">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
@@ -19,9 +19,11 @@
     <header class="header">
         <div class="header-content">
           <div class="logo-container">
-            <img src="web/img/logo1.webp" alt="Logo" class="logo">
-            <span class="website-name-EZ">EZ</span>
-            <span class="website-name-Stocks">Stocks</span>
+            <a href="index.html" class="logo-link">
+                <img src="web/img/logo1.webp" alt="Logo" class="logo">
+                <span class="website-name-EZ">EZ</span>
+                <span class="website-name-Stocks">Stocks</span>
+            </a>
           </div>
           <div class="right-section">
             <button id="updateNamesButton"><span id="ruText">Ru</span> / <span id="enText">En</span></button>
@@ -29,9 +31,6 @@
         </div>
       </header>
       <main class="main-content">
-        <div class="top-bar">
-          <input type="search" class="search-bar" placeholder="Search...">
-        </div>
         <section class="stock-details">
             <div class = "stock-header">
                 <div id="stock-svg-container"></div> 
@@ -39,7 +38,7 @@
             </div>
             <div class="prices">
                 <div class="price-item">
-                    <h2>Current Price</h2>
+                    <h2>Last Price</h2>
                     <p id="current-price">Loading...</p>
                 </div>
                 <div class="price-item">
@@ -47,7 +46,7 @@
                     <p id="open-price">Loading...</p>
                 </div>
                 <div class="price-item">
-                    <h2>Max Price</h2>
+                    <h2>Highest Price</h2>
                     <p id="max-price">Loading...</p>
                 </div>
                 <div class="price-item">
@@ -66,6 +65,6 @@
     </body>
   
   </html>
-  
+  <button id="scrollToTopBtn" title="Go to top"><i class="fa-solid fa-chevron-up"></i></button>
 </body>
 </html>

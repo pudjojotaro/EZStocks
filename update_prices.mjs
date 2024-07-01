@@ -217,7 +217,7 @@ for (let i = 0; i < tickers_names.length; i++) {
 
 
 // MOEX trading hours (Moscow time)
-const TRADING_START_HOUR = 1;
+const TRADING_START_HOUR = 9;
 const TRADING_START_MINUTE = 30;
 const TRADING_END_HOUR = 19;
 const TRADING_END_MINUTE = 0;

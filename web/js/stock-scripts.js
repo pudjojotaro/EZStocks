@@ -1,6 +1,24 @@
 document.addEventListener("DOMContentLoaded", function() {
     const urlParams = new URLSearchParams(window.location.search);
     const stock = urlParams.get('stock');
+    
+    let scroll_button = document.getElementById("scrollToTopBtn");
+
+    // When the user scrolls down 20px from the top of the document, show the button
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            scroll_button.style.display = "block";
+        } else {
+            scroll_button.style.display = "none";
+        }
+    }
+
+    // When the user clicks on the button, scroll to the top of the document
+    scroll_button.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
 
     if (stock) {
         loadStockPrices(stock);
@@ -366,7 +384,7 @@ async function loadMessages(stock) {
         const stockMessages = [];
         Object.values(data).forEach(channelMessages => {
             channelMessages.forEach(message => {
-                if (message.text && message.text.toLowerCase().includes(stock.toLowerCase())) {
+                if (message.text && message.text.toLowerCase().includes(stock.toLowerCase())) { //looks for messages including the stock name
                     stockMessages.push(message);
                 }
             });
@@ -382,9 +400,10 @@ async function loadMessages(stock) {
             stockMessages.forEach(message => {
                 const messageElement = document.createElement('div');
                 messageElement.className = 'message';
+                const formattedText = highlightStockName(message.text.replace(/\n/g, '<br>'), stock);
                 messageElement.innerHTML = `
                     <p class="message-date">${new Date(message.date).toLocaleString()}</p>
-                    <p>${message.text}</p>
+                    <p>${formattedText}</p>
                 `;
                 messagesContainer.appendChild(messageElement);
             });
@@ -395,6 +414,12 @@ async function loadMessages(stock) {
         console.error('Error fetching messages:', error);
         document.getElementById('messages-container').textContent = 'Error loading messages.';
     }
+}
+
+function highlightStockName(text, stock) {
+    
+    const regex = new RegExp(`(${stock})`, 'gi');
+    return text.replace(regex, '<span class="highlight">$1</span>');
 }
 
 // Example usage: Assuming you have a function to get the stock ticker from the URL or some other source

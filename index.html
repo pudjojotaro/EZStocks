@@ -47,10 +47,13 @@
         <div class="time-filter-container">
           <button class="filter-button" id="timeFilter">Choose a time frame</button>
           <div class="dropdown" id="timeDropdown" hidden>
-            <div class="dropdown-option">Today</div>
-            <div class="dropdown-option">Last 7 days</div>
-            <div class="dropdown-option">Last 30 days</div>
-            <div class="dropdown-option">YTD</div>
+            <!--
+              <div class="dropdown-option" data-timeframe="today">Today</div>
+            -->
+            <div class="dropdown-option" data-timeframe="last7days">Last 7 Days</div>
+            <div class="dropdown-option" data-timeframe="last30days">Last 30 Days</div>
+            <div class="dropdown-option" data-timeframe="ytd">Year to Date</div>
+           
           </div>
         </div>
         <button class="filter-button" id="favoritesFilter">Favorites</button>
@@ -59,6 +62,7 @@
       <section class="stock-grid">
       </section>
     </main>
+    <button id="scrollToTopBtn" title="Go to top"><i class="fa-solid fa-chevron-up"></i></button>
   </body>
 
 </html>
